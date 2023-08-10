@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block moha %}
+    <div class="container">
+        <div class="card bg-dark mt-5 p-5">
+            <form method="post" action="{% url 'home:contact' %}">
+            {% csrf_token %}
+            <h1 class="text-center" style="color: goldenrod">contact form</h1>
+            <div class="row mt-3">
+                <div class="col-6">
+                    <input type="text" name="subject" class="form-control" placeholder="subject">
+                </div>
+                <div class="col-6">
+                    <input type="email" name="email" class="form-control" placeholder="email">
+                </div>
+            </div>
+                <div class="row mt-3">
+                    <textarea name="message" class="form-control" placeholder="message" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger mt-3">send email</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

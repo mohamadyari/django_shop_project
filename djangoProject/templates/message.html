@@ -1,0 +1,8 @@
+{% if messages %}
+{% for msg in messages %}
+    <h3
+    class="alert alert-warning"
+    >{{ msg }}</h3>
+
+    {% endfor %}
+{% endif %}

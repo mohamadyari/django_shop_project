@@ -1,0 +1,33 @@
+body{
+    background-color: gold;
+}
+
+form {
+    background-color: gold;
+    margin:auto ;
+    width: auto;
+    padding: 40px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+form label{
+    display: none;
+}
+form input{
+    text-align: center;
+    width: 300px;
+    height: 35px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+}
+form button {
+    width: 200px;
+    height: 35px;
+    border: 2px solid transparent;
+    background-color: goldenrod;
+}
+form button:hover{
+    background-color: darkslategray;
+}

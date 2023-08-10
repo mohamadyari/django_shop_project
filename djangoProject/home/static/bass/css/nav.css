@@ -1,0 +1,110 @@
+/*.side-menu {*/
+/*    position: fixed;*/
+/*    background:darkslategrey;*/
+/*    width: 250px;*/
+/*    height: 100%;*/
+
+
+
+
+/*}*/
+
+/*.side-menu a {*/
+/*    list-style: none;*/
+/*    text-decoration: none;*/
+/*    display: block;*/
+/*    color:darkorange;*/
+/*    line-height: 50px;*/
+/*    margin-left: 10px;*/
+/*    font-size: 18px;*/
+/*    font-weight: 500;*/
+
+/*}*/
+
+/*.side-menu a:hover {*/
+/*    background:#333333;*/
+/*    color:goldenrod ;*/
+/*}*/
+
+/*.image-container {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+/*.image-container img {*/
+/*    width: 120px;*/
+/*    border-radius: 50%;*/
+/*    margin-top: 30px;*/
+/*    border: 3px solid white;*/
+
+/*}*/
+
+/*.side-menu center h1 {*/
+/*    color: white;*/
+/*}*/
+/*.data {*/
+/*    margin-top: 2%;*/
+
+/*}*/
+/*.card{*/
+/*    margin-top: 100px;*/
+/*    padding: 30px;*/
+/*    width: 70%;*/
+/*    background-color: #262626;*/
+/*}*/
+/*.card-body h6 {*/
+/*    font-size: 24px ;*/
+/*    line-height: 40px;*/
+/*}*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.nav {
+    background: #262626;
+    z-index: 2;
+    display: flex;
+    position: relative;
+    opacity: 0.95;
+}
+
+.nav ul {
+    list-style: none;
+}
+ .nav ul li a {
+     display: block;
+     color: #fff0ff;
+     text-decoration: none;
+ }
+
+ .nav ul li {
+     background: #262626;
+     width: 100px;
+     height: 50px;
+     line-height: 50px;
+     text-align: center;
+     float: left;
+     color: #fff0ff;
+     font-size: 14px;
+     position: relative;
+     font-family: Sans-Serif;
+ }
+
+ .nav ul li:hover {
+     background: #9bc53d;
+     z-index: 2;
+ }
+ .nav ul ul{
+     display: none;
+ }
+ .nav ul li:hover > ul{
+     display: block;
+ }
+.nav ul ul ul:hover > a {
+    display: block;
+}
+.nav ul ul ul {
+    margin-left: 100px;
+    top: 0;
+    position: absolute;
+}

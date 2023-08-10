@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block moha %}
+<div class="container">
+<h1>Order</h1>
+<h4>total price: {{ order.get_price }} T</h4><br>
+    <form method="post" action="{% url 'order:coupon' order.id %}">
+        {% csrf_token %}
+        {{ form }}
+        <a href="{% url 'order:request' order.id order.get_price %}">پرداخت</a>
+        <button type="submit" class="btn btn-info">Coupon</button>
+    </form>
+</div>
+{% endblock %}

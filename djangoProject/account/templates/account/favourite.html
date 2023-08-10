@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block moha %}
+    <br>
+<div class="container">
+<div class="card">
+    {% for i in product %}
+        <a href="{% url 'home:detail' i.id %}"> <img src="{{ i.image.url }}" style="width: 75px; height: 75px;" alt="">  {{ i.name }}</a>
+        <hr>
+    {% endfor %}
+</div>
+</div>
+
+{% endblock %}

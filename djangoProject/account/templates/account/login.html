@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'account/login.css' %}">
+{% endblock %}
+{% block title %}
+        login
+{% endblock %}
+{% block moha %}
+<h1>login</h1>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <h8>Remember Me</h8>
+        <br>
+        <hr>
+    <button type="submit"> login </button>
+        <hr>
+    <a href="{% url 'account:reset' %}">فراموشی رمز عبور</a><br><br>
+    <a href="{% url 'account:user_register' %}">ثبت نام</a>
+    </form>
+    <style>
+    form ul{
+        display: none;
+    }
+    </style>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block moha %}
+    <form method="post" action="">
+    {% if validlink %}
+    {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit">change password</button>
+    </form>
+    {% endif %}
+{% endblock %}

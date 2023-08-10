@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ profile.user.username }}
+{% endblock %}
+{% block moha %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-6">
+                <h1>profile</h1>
+
+    <div class="card" style="width: 18rem;">
+  <div class="card-body">
+
+    <h6 class="card-subtitle mb-2 text-muted">user: {{ profile.user.username }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">email: {{ profile.user.email }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">phone: {{ profile.phone }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">name: {{ profile.user.first_name }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">lastname: {{ profile.user.last_name }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">address: {{ profile.address }}</h6>
+
+     <a href="{% url 'account:user_update' %}"> update </a>
+    <br>
+    <a href="{% url 'account:change_password' %}"> change password</a>
+      <br>
+    <a href="{% url 'account:favourite' %}">favourite</a>
+      <br>
+    <a href="{% url 'account:history' %}">history</a>
+  </div>
+</div>
+
+
+            </div>
+            <div class="col-6">
+                <img src="{{ profile.profile_image.url }}" style=" width: 200px; height: 200px;" alt="">
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+
+{#    <table>#}
+{#    <tr>#}
+{#      <th> user: {{ profile.user.username }}</th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#        <th>email: {{ profile.user.email }}</th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#        <th> phone: {{ profile.phone }}</th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#        <th> firstname: {{ profile.user.first_name }}</th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#        <th> lastname: {{ profile.user.last_name }}</th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#    <th>#}
+{#        address: {{ profile.address }}#}
+{#    </th>#}
+{#    </tr>#}
+{#    </table>#}

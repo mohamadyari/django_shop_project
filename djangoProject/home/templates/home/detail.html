@@ -1,0 +1,323 @@
+{% extends 'base.html'  %}
+{% load jformat %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'home/css/test.css' %}">
+{% endblock %}
+{% block title %}detail{% endblock %}
+{% block moha %}
+   <div class="container">
+
+     <h1>{{ product.name }}</h1>
+   <h4>rate: {{ product.average }}</h4><br>
+    <img style="width: 250px" src="{{ product.image.url }}" alt=""><br>
+    <p>{{ product.information|safe }}</p>
+   <div class="row">
+       {% for img in images %}
+           <img src="{{ img.image.url }}" style="width: 100px;height: 100px;" alt="">
+       {% endfor %}
+    {% if is_favourite %}
+        <a href="{% url 'home:favourite' product.id %}"><i class="fa fa-heart" style="color: red; font-size: 24px;"></i></a>
+        {% else %}
+        <a href="{% url 'home:favourite' product.id %}"><i class="fa fa-heart-o" style="color: red; font-size: 24px;"></i></a>
+   {% endif %}
+   </div>
+    <h2> like: {{ product.total_like }}</h2>
+    {% if request.user.is_authenticated %}
+            <a href="{% url 'home:product_like' product.id %}"
+               class="btn btn-info {% if is_dislike %}disabled {% endif %}">like</a><br><br>
+        <h2> dislike: {{ product.total_dislike }}</h2>
+            <a href="{% url 'home:product_dislike' product.id %}"
+               class="btn btn-primary {% if is_like %}disabled {% endif %}">dislike</a><br><br>
+    {% endif %}
+    {% if product.status == 'Both' %}
+        <form action="" method="post">
+              {% csrf_token %}
+            {% for data in size %}
+               <input type="radio" value="{{ data.id }}" {% if variants.id == data.id %} checked {% endif %}
+                      name="select" onchange="this.form.submit();">
+                <a href="" style="text-decoration: none">{{ data.size_variant }}</a>
+        {% endfor %}
+        </form><br>
+
+            <form action="" method="post">
+              {% csrf_token %}
+            {% for data in colors %}
+               <input type="radio" value="{{ data.id }}" {% if variants.id == data.id %} checked {% endif %}
+                      name="select" onchange="this.form.submit();">
+                <a href="" style="text-decoration: none">{{ data.color_variant }}</a>
+                {% endfor %}
+        </form><br>
+    {% endif %}
+   <div  class="card bg-danger m-2">
+        {% if  variants.id %}
+       <h4>price:{{ variants.total_price }}</h4>
+            {% else %}
+            <h4>price:{{ product.total_price }}</h4>
+       {% endif %}
+
+   </div>
+
+
+
+
+
+
+   <div class="card">
+       {% if product.status != 'None' %}
+           <form method="post" action="{% url 'cart:add_cart' product.id %}">
+           {% csrf_token %}
+               <input type="hidden" name="select"  value="{{ variants.id }}">
+               <input type="number" name="quantity" min="1" value="1" max="{{ variants.amount }}"
+               required oninvalid="setCustomValidity('باید تعداد حداکثر{{ variants.amount }} باشد')">
+            <button type="submit">Add</button>
+       </form>
+       {% else %}
+            <form method="post" action="{% url 'cart:add_cart' product.id %}">
+           {% csrf_token %}
+                <input type="number" name="quantity" min="1" value="1" max="{{ product.amount }}"
+                required oninvalid="setCustomValidity('باید تعداد حداکثر{{ product.amount }} باشد')">
+            <button type="submit">Add</button>
+       </form>
+       {% endif %}
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <hr>
+
+
+
+          <div class="row comment">
+              <div class="col-6">
+                  {% if user.is_authenticated %}
+                  <form method="post" action="{% url 'home:product_comment' product.id %}">
+                      {% csrf_token %}
+                      <div class="card">
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="comment-box">
+                                      <h4>Add Comment</h4>
+                                      <div class="rating">
+                                          <input type="radio" name="rate" value="5" id="5"> <label for="5">&star;</label>
+                                          <input type="radio" name="rate" value="4" id="4"> <label for="4">&star;</label>
+                                          <input type="radio" name="rate" value="3" id="3"> <label for="3">&star;</label>
+                                          <input type="radio" name="rate" value="2" id="2"> <label for="2">&star;</label>
+                                          <input type="radio" name="rate" value="1" id="1"> <label for="1">&star;</label>
+                                      </div>
+                                      <div class="comment-area">
+                                          <textarea name="comment" class="form-control"
+                                                    rows="4" required oninvalid="setCustomValidity('لطفا نظر خود را درج کنید')"></textarea>
+                                      </div>
+                                      <div class="text-center">
+                                          <button type="submit" class="btn-danger">send comment</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                  {% endif %}
+              </div>
+          </div>
+
+
+            {% for com in comment %}
+                <h2>Comment User</h2>
+                <div class="card bg-dark text-white">
+                    <div class="row ">
+                        <div class="col-8">
+                            <p>{{ com.user.username }}</p>
+                        </div>
+                            <div class="col-4">
+                                <div class="comment-rating">
+                                <i class="fa fa-star{% if com.rate < 1 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if com.rate < 2 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if com.rate < 3 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if com.rate < 4 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if com.rate < 5 %}-o empty{% endif %}"></i>
+
+                                </div>
+                        </div>
+                </div>
+
+                    <div class="row p-3">
+                        <p>{{ com.comment }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="p-2 m-2">
+
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'home:comment_like' com.id %}" class="like m-2 cursor">
+                                <i class="fa fa-thumbs-o-up {% if is_comment_dislike %} disabled {% endif %}">
+                                <span>like</span>&nbsp {{ com.total_comment_like }}
+                                </i>
+                                </a>
+                            {% endif %}
+                        </div>
+                     <div class="row">
+                        <div class="p-2 m-2">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'home:comment_dislike' com.id %}" class="dislike m-2 cursor">
+                                <i class="fa fa-thumbs-o-down {% if is_comment_like %} disabled {% endif %}">
+                                <span>dislike</span>&nbsp {{ com.total_comment_dislike }}
+                                </i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    <form method="post" action="{% url 'home:product_reply' product.id com.id %}">
+                        {% csrf_token %}
+                        <textarea name="comment" id="comment" placeholder="reply..." class="form-control" rows="4" required oninvalid="setCustomValidity('لطفا نظر خود را درج کنید')" ></textarea>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-info">send Reply</button>
+                        </div>
+                    </form>
+
+                    {% for data in com.comment_reply.all %}
+                        <div class="bg-danger text-white mt-2 p-2">
+                        <p>{{ data.comment }}</p>
+                        </div>
+                    {% endfor %}
+             </div>
+                {#    {% for tag in  similar %}#}
+{#        <a href="{% url 'home:detail' tag.id %}">#}
+{#        <img style="width: 200px; height: 200px;" src="{{ tag.image.url }}" alt="">#}
+{#        </a>#}
+{#    {% endfor %}#}
+            {% endfor %}
+
+
+   {% block script %}
+    {% if product.status != 'None' %}
+
+         <script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{% for i in change %} {% if variants.id == i.variant_id %} '{{ i.update|jformat:"%A %d %B %Y" }}' {% endif %} ,{% endfor %}],
+        datasets: [{
+            label: '# of Votes',
+            data: [{% for i in change %} {% if variants.id == i.variant_id %} {{ i.unit_price }} {% endif %} ,{% endfor %}],
+            backgroundColor: [
+                {#'rgba(255, 99, 132, 0.8)',#}
+                {#'rgba(54, 162, 235, 0.8)',#}
+                {#'rgba(255, 206, 86, 0.8)',#}
+                {#'rgba(75, 192, 192, 0.8)',#}
+                {#'rgba(153, 102, 255, 0.8)',#}
+                {#'rgba(255, 159, 64, 0.8)'#}
+                {% for i in change %}'{{ i.color }}' {% endfor %}
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+      options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+
+    }
+ });
+
+</script>
+       {% else %}
+
+
+
+        <script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{% for i in update %} '{{ i.update|jformat:"%A %d %B %Y" }}' ,{% endfor %}],
+        datasets: [{
+            label: '# of Votes',
+            data: [ {% for i in update %} {{ i.unit_price }} ,{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+                'rgba(255, 159, 64, 0.8)'
+{#                {% for i in change %}'{{ i.color }}' {% endfor %}#}
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+       options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+
+    }
+ });
+
+</script>
+
+   <div class="row">
+       <canvas id="myChart" width="150" height="30"></canvas>
+   </div>
+   </div>
+
+    {% endif %}
+   {% endblock %}
+
+       <br><br><br>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

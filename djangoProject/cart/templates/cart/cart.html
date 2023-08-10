@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}
+    cart
+{% endblock %}
+{% block moha %}
+<h1>cart</h1>
+    <div class="container">
+    <div class="row">
+    <table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">image</th>
+      <th scope="col">product</th>
+      <th scope="col">size</th>
+      <th scope="col">color</th>
+      <th scope="col">price</th>
+      <th scope="col">quantity</th>
+      <th scope="col">total price</th>
+      <th scope="col">remove</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for c in cart %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td><img src="{{ c.product.image.url }}" style="width: 70px" alt=""></td>
+      <td>{{ c.product.name }}</td>
+      <td>{{ c.variant.size_variant.name }}</td>
+      <td>{{ c.variant.color_variant.name }}</td>
+    <td>
+        {% if c.product.status != 'None' %}
+        {{ c.variant.total_price }}
+         {% else %}
+            {{ c.product.total_price }}
+        {% endif %}
+    </td>
+    <td>
+        <a href="{% url 'cart:add_single' c.id %}"><i class="fa fa-plus"></i></a>
+        {{ c.quantity }}
+        <a href="{% url 'cart:remove_single' c.id %}"><i class="fa fa-minus"></i></a>
+
+    </td>
+    <td>
+        {% if c.product.status != 'None' %}
+        {% widthratio c.variant.total_price 1 c.quantity %}
+        {% else %}
+            {% widthratio c.product.total_price 1 c.quantity %}
+        {{ c.product.total_price }}
+        {% endif %}
+    </td>
+    <td>
+        <a href="{% url 'cart:remove_cart' c.id %}"><i class="fa fa-trash" style="color: red"></i></a>
+    </td>
+    </tr>
+  {% endfor %}
+  <tr>
+      <td colspan="7">total</td>
+      <td> {{ total }}</td>
+  </tr>
+
+
+  </tbody>
+</table>
+    </div>
+
+
+    <div class="row">
+        <form method="post" action="{% url 'order:order_create' %}">
+        {% csrf_token %}
+        <div class="card" style="padding: 10px; background-color: #ad9f9f">
+            <label for="">email:
+            <input type="email" name="email" value="{{ user.email }}">
+            </label>
+             <label for="">name:
+            <input type="text" name="first_name" value="{{ user.first_name }}">
+            </label>
+             <label for="">last_name:
+            <input type="text" name="last_name" value="{{ user.last_name }}">
+            </label>
+             <label for="">address:
+            <input type="text" name="address" value="{{ user.profile.address }}">
+            </label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-outline-danger">order</button>
+    </form>
+    </div>
+    </div>
+{% endblock %}

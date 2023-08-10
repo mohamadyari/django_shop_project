@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load home_test %}
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'home/css/product.css' %}">
+{% endblock %}
+{#{% load thumbnail %}#}
+{% block title %}
+    home page
+{% endblock %}
+{% block moha %}
+    <div class="container-fluid">
+    <dvi class="row">
+        <div class="col-3">
+
+{#    <h1>all product</h1>#}
+
+      <!-- Example single danger button -->
+<!-- Example split danger button -->
+{#        <br>#}
+
+{##}
+{#        <hr>#}
+{#    {% for data in category %}#}
+{#        <a href="{{ data.get_absolute_url }}">{{ data.name }}</a>#}
+{#                <div class="btn-group">#}
+{#                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                   </button>#}
+{#                   <div class="dropdown-menu">#}
+{#                       {% for info in data.sub.all %}#}
+{#                    <a class="dropdown-item" href="{{ info.get_absolute_url }}">{{ info.name }}</a>#}
+{#                       {% endfor %}#}
+{#                   </div>#}
+{#                </div>#}
+
+
+{#    {% endfor %}#}
+{#    <br>#}
+{#        <hr>#}
+{#    <div class="row mt-6">#}
+{#        <div class="col-4">#}
+            <form action="">
+                <label for="">price:
+                        <div class='multi-range' data-lbound='{{ min_price }}' data-ubound='50'>
+        <hr />
+        <input type='range' name="price_1"
+               min='{{ min_price }}' max='{{ max_price }}' step='5000' value='{{ min_price }}'
+               oninput='this.parentNode.dataset.lbound=this.value;'
+        />
+        <input type='range'
+               min='{{ min_price }}' max='{{ max_price }}' step='5' value='{{ max_price }}' name="price_2"
+               oninput='this.parentNode.dataset.ubound=this.value;'
+        />
+                        </div>
+                </label>
+                            <br>
+
+<label for="">brand:
+{{ filter.form.brand }}
+</label><br>
+                <label for="">Size:
+                {{ filter.form.size }}
+                </label><br>
+<label for="">color:
+                {{ filter.form.color }}
+                </label>
+                <br>
+<div style="display: none">
+    {{filter.form.price}}
+    {{filter.form.create}}
+    {{filter.form.discount}}
+    {{filter.form.favourite}}
+    {{filter.form.sell}}
+    {% if 'search' in request.GET %}
+    {{s_form}}
+    {% endif %}
+</div>
+                <button type="submit" class="btn btn-danger">Filter</button>
+                <br>
+            </form>
+
+        </div>
+    <br><br>
+                <div class="col-9">
+                   <br>
+
+            <div class=" row">
+
+                <form action="">
+                    <input type="submit" name="price" value="گرانترین">
+                    <input type="submit" name="price" value="ارزانترین">
+                    <input type="submit" name="create" value="جدیدترین">
+                    <input type="submit" name="discount" value="تخفیف">
+                    <input type="submit" name="total_favourite" value="محبوب ترین">
+                    <input type="submit" name="sell" value="پرفروش ترین">
+                    <div style="display: none">
+                        {{ filter.form.brand }}
+                        {{ filter.form.color }}
+                        {{ filter.form.size }}
+                        {{ filter.form.price_1 }}
+                        {{ filter.form.price_2 }}
+                        {% if 'search' in request.GET %}
+    {{s_form}}
+    {% endif %}
+                    </div>
+                  </form>
+            </div>
+
+            <br>
+
+<div class="container">
+    <hr>
+
+    <h3 style="color: #990000">محصولات</h3>
+
+    <hr>
+
+    <div class="row">
+    {% for product in products %}
+        <div class="col-md-3 col-sm-6">
+            <div class="product-grid">
+                <div class="product-image">
+                    <a href="{% url 'home:detail' product.id %}">
+                        <img class="pic-1"  src="{{ product.image.url }}" style="width: 250px;height: 300px;">
+                    </a>
+{#                    <ul class="social">#}
+{#                        <li><a href="" data-tip="Quick View"><i class="fa fa-search"></i></a></li>#}
+{#                        <li><a href="" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>#}
+{#                        <li><a href="" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>#}
+{#                    </ul>#}
+                    <span class="product-discount-label">{{ product.discount|intcomma  }}%</span>
+                </div>
+{#                <ul class="rating ">#}
+{#                    <li class="fa fa-star"></li>#}
+{#                    <li class="fa fa-star"></li>#}
+{#                    <li class="fa fa-star"></li>#}
+{#                    <li class="fa fa-star"></li>#}
+{#                    <li class="fa fa-star {{ product.average }}"></li>#}
+{#                </ul>#}
+                <div class="product-content">
+                    <h3 class="title"><a href="{% url 'home:detail' product.id %}"><h5>{{ product.name }}</h5></a></h3>
+                    <div class="price">{{ product.total_price }}
+                        <span>{{ product.unit_price }}</span>
+                    </div>
+                    <a href="{% url 'cart:compare' product.id %}">Compare</a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        {% endfor %}
+</div>
+    </div>
+
+</div>
+    </dvi>
+    <br>
+
+
+
+
+
+        <hr>
+<div class="container col-2">
+    <br>
+    <br>
+    <nav aria-label="Page navigation example">
+  <ul class="pagination">
+
+  {% if products.has_previous %}
+  <li class="page-item">
+      <a class="page-link" href="{% filter_url  products.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
+  </li>
+       <li class="page-item">
+      <a class="page-link" href="{% filter_url  products.previous_page_number 'page' request.GET.urlencode  %}">{{ products.previous_page_number }}</a>
+  </li>
+  {% endif %}
+
+  <li class="page-item {% if page_num == page_num %} active {% endif %}">
+      <a style="background-color: #0f74a8" class="page-link" href=" {% filter_url  products.number 'page' request.GET.urlencode  %}">{{ products.number }}</a>
+  </li>
+
+  {% if products.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{% filter_url  products.next_page_number 'page' request.GET.urlencode  %}">{{ products.next_page_number }}</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="{% filter_url  products.next_page_number 'page' request.GET.urlencode  %}">Next</a>
+    </li>
+
+      {% endif %}
+
+  </ul>
+</nav>
+
+
+
+    </div>
+
+    <style>
+    .multi-range, .multi-range * { box-sizing: border-box; padding: 0; margin: 0; }
+.multi-range {
+    position: relative; width: 160px; height: 28px; margin: 16px;
+    border: 1px solid #ddd; font-family: monospace;
+}
+.multi-range > hr { position: absolute; width: 100%; top: 50%; }
+.multi-range > input[type=range] {
+    width: calc(100% - 16px);
+    position: absolute; bottom: 6px; left: 0;
+}
+.multi-range > input[type=range]:last-of-type { margin-left: 16px; }
+.multi-range > input[type=range]::-webkit-slider-thumb { transform: translateY(-18px); }
+.multi-range > input[type=range]::-webkit-slider-runnable-track { -webkit-appearance: none; height: 0px; }
+.multi-range > input[type=range]::-moz-range-thumb { transform: translateY(-18px); }
+.multi-range > input[type=range]::-moz-range-track { -webkit-appearance: none; height: 0px; }
+.multi-range > input[type=range]::-ms-thumb { transform: translateY(-18px); }
+.multi-range > input[type=range]::-ms-track { -webkit-appearance: none; height: 0px; }
+.multi-range::after {
+    content: attr(data-lbound) ' - ' attr(data-ubound);
+    position: absolute; top: 0; left: 100%; white-space: nowrap;
+    display: block; padding: 0px 4px; margin: -1px 2px;
+    height: 26px; width: auto; border: 1px solid #ddd;
+    font-size: 13px; line-height: 26px;
+}
+    </style>
+    <br><br><br>
+
+{% endblock %}
+<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+

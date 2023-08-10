@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block moha %}
+    <div class="container">
+        <div class="card mt-3 p-5">
+            {% for i in data %}
+                <h2>name: {{ i.product.name }} price: {{ i.order.get_price }}
+                <img src="{{ i.product.image.url }}" style="width: 75px;height: 75px;" alt="">
+                <h3>address: {{ i.order.address }}</h3>
+                {% if i.order.paid == True %}
+                    <p>پرداخت شد</p>
+                {% else %}
+                    <p>پرداخت نشد</p>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
